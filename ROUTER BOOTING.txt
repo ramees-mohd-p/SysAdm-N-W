@@ -1,0 +1,53 @@
+Router Booting
+--------------
+
+RAM(RUNNING CONFIGURATION) 
+NVRAM(SAVED CONFIGURATION)
+ROM(MINI IOS)
+FLASH (IOS)
+
+Router will bootup on the basis of configuration register value(Default CRV - 0x2102) it stored in NVRAM.
+CMD - show version (To know the CRV value)
+0x2102 - When ever device powered on this CRV lookup on flash memory ,When power on the router the flash memory data or ios load to the RAM and after that it will lookup the NVRAM, 
+if any configuration exist it will also load to the RAM. Whenever booting time the router can't to identify the flash memory then router load the mini IOS from ROM to RAM.
+
+On this booting behaviour password saved in NVRAM.
+
+Type of CRV Values.
+0x2102,0x2100,0x2142
+
+How can access router?
+1- Console
+2- telnet and SSH
+3- auxiliary port
+
+
+0x2142
+------
+Booting behaviour of this CRV, it doesn't load value from NVRAM so this CRV value used to break the password
+
+0x2100
+------
+It used while the flash memory corrupt, so in this ROM mini IOS load to RAM also it doesn't load value from NVRAM.
+
+
+
+Password Break
+
+1- Whenever if we don't have access to the router we need to go to Roman mode(turn on and while booting 'ctrl+c' - to go to roan mode)
+2- confreg 0x2142.
+3- reset
+4- show startup-config(we can see the password)
+5- copy startup-config running-config
+5- configure terminal
+6- line console 0
+7- password cisco
+8- exit to privilege mode from configuration mode
+7- wr  - save configuration
+8- configure terminal
+9- config-register 0x2102 - to change configuration value
+10- reload  
+
+
+
+
